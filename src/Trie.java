@@ -8,6 +8,8 @@ import java.util.LinkedList;
  */
 public class Trie {
     private Node root;
+    private int length = 4;
+    private int numColors = 6;
 
     /**
      * Default constructor for Trie class.
@@ -26,7 +28,7 @@ public class Trie {
      */
     public Node initHelper(Node curr, int depth) {
         // base case
-        if (depth == 4) {
+        if (depth == length) {
             curr.checkChildren();
             return curr;
         }
@@ -34,7 +36,7 @@ public class Trie {
         // set all children
         List<Node> list = curr.getChildren();
         list = new ArrayList<Node>();
-        for (int i = 1; i <= 6; i++) {
+        for (int i = 0; i < numColors; i++) {
             Node temp = new Node(i, depth + 1);
             initHelper(temp, depth + 1);
             curr.addChild(temp);
@@ -71,5 +73,24 @@ public class Trie {
         }
 
         return str;
+    }
+
+    public void toString2() {
+        // initialize variables
+        toString2Helper(root, 0, "");
+    }
+
+    public void toString2Helper(Node curr, int depth, String str) {
+        // base case
+        if (curr.getChildren() == null) {
+            System.out.println(str + curr.getColor());
+            return;
+        }
+
+        // set all children
+        if (depth != 0) str += curr.getColor() + " ";
+        for (Node child : curr.getChildren()) {
+            toString2Helper(child, depth + 1, str);
+        }
     }
 }
