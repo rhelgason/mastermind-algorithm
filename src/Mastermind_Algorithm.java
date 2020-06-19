@@ -30,6 +30,8 @@ public class Mastermind_Algorithm {
             }
 
             // remove impossible combinations
+            S.removeGuesses(white, black);
+            System.out.println(S.toString());
 
             cont = false;
         }

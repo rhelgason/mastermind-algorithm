@@ -28,69 +28,77 @@ public class Trie {
      */
     public Node initHelper(Node curr, int depth) {
         // base case
-        if (depth == length) {
-            curr.checkChildren();
-            return curr;
+        if (depth > length) {
+            return null;
         }
 
         // set all children
-        List<Node> list = curr.getChildren();
-        list = new ArrayList<Node>();
         for (int i = 0; i < numColors; i++) {
-            Node temp = new Node(i, depth + 1);
-            initHelper(temp, depth + 1);
-            curr.addChild(temp);
+            Node temp = new Node(i, depth);
+            curr.addChild(initHelper(temp, depth + 1));
         }
         return curr;
     }
 
-    @Override
-    public String toString() {
-        // initialize variables
-        String str = "";
-        int depth = -1;
-        Queue<Node> queue = new LinkedList<Node>();
-        queue.add(root);
+    public void removeGuesses(int white, int black) {
+        removeGuessesHelper(root, white, black);
+    }
 
-        // breadth traversal of trie
-        while (!queue.isEmpty()) {
-            // recognize end of level
-            Node curr = queue.remove();
-            if (curr.getDepth() > depth) {
-                str += "\n";
-                depth = curr.getDepth();
-            }
+    public void removeGuessesHelper(Node curr, int white, int black) {
+        // base case
+        if (curr == null) return;
 
-            // add children to queue
-            if (curr.getChildren() == null) {
-                continue;
-            }
-            for (Node child : curr.getChildren()) {
-                str += child.getColor() + " ";
-                queue.add(child);
-            }
-            str += "     ";
+        if (curr.getDepth() == length - 1) {
+            // CHECK IF IT IS VALID
         }
 
-        return str;
+        // check all child paths
+        int i = 0;
+        for (Node child : curr.getChildren()) {
+            removeGuessesHelper(child, white, black);
+            if (curr.getDepth() < length - 2 && child != null) curr.setChild(child.checkChildren(), i);
+            i++;
+        }
     }
 
-    public void toString2() {
-        // initialize variables
-        toString2Helper(root, 0, "");
+    /**
+     * Converts the contents of the trie to readable format.
+     *
+     * @return String representation of all paths of the trie
+     */
+    @Override
+    public String toString() {
+        String str = "";
+        for (Node child : root.getChildren()) {
+            str += toStringHelper(child, "");
+        }
+        return str.trim();
     }
 
-    public void toString2Helper(Node curr, int depth, String str) {
+    /**
+     * Recursive helper function for converting trie to readable format.
+     *
+     * @param curr the current Node in the trie
+     * @param str readable format of current traversal
+     * @return String representation of all paths of the trie
+     */
+    public String toStringHelper(Node curr, String str) {
         // base case
-        if (curr.getChildren() == null) {
-            System.out.println(str + curr.getColor());
-            return;
+        if (curr == null) {
+            return "";
+        }
+
+        // end of path
+        if (curr.getDepth() == length - 1) {
+            return str + curr.getColor() + "\n";
         }
 
         // set all children
-        if (depth != 0) str += curr.getColor() + " ";
+        str += curr.getColor() + " ";
+        String out = "";
         for (Node child : curr.getChildren()) {
-            toString2Helper(child, depth + 1, str);
+            out += toStringHelper(child, str);
         }
+        return out;
     }
 }

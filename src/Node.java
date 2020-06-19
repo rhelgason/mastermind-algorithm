@@ -21,16 +21,20 @@ public class Node {
         children = new ArrayList<Node>();
     }
 
+    public void setChild(Node child, int index) {
+        children.set(index, child);
+    }
+
     /**
      * Sets the children to null if the list is empty.
      */
-    public void checkChildren() {
+    public Node checkChildren() {
         for (Node child : children) {
             if (child != null) {
-                return;
+                return this;
             }
         }
-        children = null;
+        return null;
     }
 
     /**
