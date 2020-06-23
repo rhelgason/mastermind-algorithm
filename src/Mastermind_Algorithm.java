@@ -18,8 +18,8 @@ public class Mastermind_Algorithm {
             // guess and get response
             System.out.println("Guess " + ++numGuess + ":" + toColor(guess));
             do {
-                white = getPegs("white");
                 black = getPegs("black");
+                white = getPegs("white");
                 if (white + black > 4) System.out.println("\nError. The total number of pegs must be between 0 and 4 inclusive.");
             } while (white + black > 4);
 
@@ -30,11 +30,11 @@ public class Mastermind_Algorithm {
             }
 
             // remove impossible combinations
-            S.removeGuesses(white, black);
-            System.out.println(S.toString());
-
+            S.removeGuesses(white, black, guess);
             cont = false;
         }
+
+        // game has been won
     }
 
     /**

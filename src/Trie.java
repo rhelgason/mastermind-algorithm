@@ -8,14 +8,16 @@ import java.util.LinkedList;
  */
 public class Trie {
     private Node root;
-    private int length = 4;
-    private int numColors = 6;
+    private int size;
+    private static final int length = 4;
+    private static final int numColors = 6;
 
     /**
      * Default constructor for Trie class.
      */
     public Trie() {
         root = new Node(-1, -1);
+        size = (int) Math.pow(numColors, length);
         initHelper(root,0);
     }
 
@@ -40,25 +42,101 @@ public class Trie {
         return curr;
     }
 
-    public void removeGuesses(int white, int black) {
-        removeGuessesHelper(root, white, black);
+    /**
+     * Get the current number of patterns in the trie.
+     *
+     * @return the size of the trie
+     */
+    public int getSize() {
+        return size;
     }
 
-    public void removeGuessesHelper(Node curr, int white, int black) {
-        // base case
-        if (curr == null) return;
+    /**
+     * Remove any guesses from the trie that are not possible.
+     *
+     * @param white the number of white response pegs
+     * @param black the number of black response pegs
+     * @param guess the last guess made
+     */
+    public void removeGuesses(int white, int black, int[] guess) {
+        int[] empty = new int[length];
+        removeGuessesHelper(root, white, black, empty, guess);
+    }
 
+    /**
+     * Recursive helper function for removing impossible guesses.
+     *
+     * @param curr the current Node in the trie
+     * @param white the number of white response pegs
+     * @param black the number of black response pegs
+     * @param code current pattern traversal of the trie
+     * @param guess the last guess made
+     * @return
+     */
+    public Node removeGuessesHelper(Node curr, int white, int black, int[] code, int[] guess) {
+        // determine if pattern is possible or not
         if (curr.getDepth() == length - 1) {
-            // CHECK IF IT IS VALID
+            if (valid(white, black, code, guess)) return curr;
+            size--;
+            return null;
         }
 
         // check all child paths
-        int i = 0;
+        int i = -1;
         for (Node child : curr.getChildren()) {
-            removeGuessesHelper(child, white, black);
-            if (curr.getDepth() < length - 2 && child != null) curr.setChild(child.checkChildren(), i);
             i++;
+            if (child == null) continue;
+            code[child.getDepth()] = child.getColor();
+            curr.setChild(i, removeGuessesHelper(child, white, black, code, guess));
+            if (curr.getDepth() < length - 2) curr.setChild(i, child.checkChildren());
         }
+
+        return curr;
+    }
+
+    /**
+     * Determines if a pattern is possible given the response pegs.
+     *
+     * @param origWhite the number of white response pegs
+     * @param origBlack the number of black response pegs
+     * @param origCode possible color pattern
+     * @param origGuess the last guess made
+     * @return whether or not the pattern is possible
+     */
+    public boolean valid(int origWhite, int origBlack, int[] origCode, int[] origGuess) {
+        // make copies of patterns
+        int[] code = new int[length];
+        for (int i = 0; i < length; i++) code[i] = origCode[i];
+        int[] guess = new int[length];
+        for (int i = 0; i < length; i++) guess[i] = origGuess[i];
+
+        // determine black peg count
+        int black = 0;
+        for (int i = 0; i < length; i++) {
+            if (code[i] == guess[i]) {
+                black++;
+                code[i] = -1;
+                guess[i] = -1;
+            }
+        }
+
+        // determine white peg count
+        int white = 0;
+        for (int i = 0; i < length; i++) {
+            if (code[i] != -1) {
+                for (int j = 0; j < length; j++) {
+                    if (code[i] == guess[j]) {
+                        white++;
+                        guess[j] = -1;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // determine validity of code
+        if (white == origWhite && black == origBlack) return true;
+        return false;
     }
 
     /**
@@ -69,9 +147,7 @@ public class Trie {
     @Override
     public String toString() {
         String str = "";
-        for (Node child : root.getChildren()) {
-            str += toStringHelper(child, "");
-        }
+        str = toStringHelper(root, str);
         return str.trim();
     }
 
@@ -83,21 +159,16 @@ public class Trie {
      * @return String representation of all paths of the trie
      */
     public String toStringHelper(Node curr, String str) {
-        // base case
-        if (curr == null) {
-            return "";
-        }
-
         // end of path
         if (curr.getDepth() == length - 1) {
-            return str + curr.getColor() + "\n";
+            return str.trim() + "\n";
         }
 
         // set all children
-        str += curr.getColor() + " ";
         String out = "";
         for (Node child : curr.getChildren()) {
-            out += toStringHelper(child, str);
+            if (child == null) continue;
+            out += toStringHelper(child, str + child.getColor() + " ");
         }
         return out;
     }

@@ -21,7 +21,7 @@ public class Node {
         children = new ArrayList<Node>();
     }
 
-    public void setChild(Node child, int index) {
+    public void setChild(int index, Node child) {
         children.set(index, child);
     }
 
