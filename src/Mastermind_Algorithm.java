@@ -45,6 +45,16 @@ public class Mastermind_Algorithm {
         }
 
         // game has finished
+        if (won && numGuess <= 5) {
+            System.out.println("\nThe correct code was guessed in " + numGuess + " attempts.");
+        } else if (won) {
+            System.out.println("\nThe correct code was guessed in " + numGuess + " attempts. However, this algorithm " +
+                    "should always succeed in five or fewer guesses. This is most likely not an error with the program. " +
+                    "Please check your responses and retry.");
+        } else {
+            System.out.println("\nThe computer was unable to guess your code. This is most likely not an error with the " +
+                    "program. Please check your responses and retry.");
+        }
     }
 
     /**

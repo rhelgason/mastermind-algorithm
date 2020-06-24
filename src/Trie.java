@@ -1,10 +1,5 @@
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Queue;
-import java.util.LinkedList;
-
 /**
- * Class representing a trie data structure.
+ * Class representing a Trie data structure.
  */
 public class Trie {
     private Node root;
@@ -24,10 +19,10 @@ public class Trie {
     }
 
     /**
-     * Recursive helper function for creating the trie.
+     * Recursive helper function for creating the Trie.
      *
-     * @param curr the current Node in the trie
-     * @param depth the current depth in the trie
+     * @param curr  the current Node in the Trie
+     * @param depth the current depth in the Trie
      * @return initialized Node to be added as a child
      */
     public Node initHelper(Node curr, int depth) {
@@ -45,25 +40,25 @@ public class Trie {
     }
 
     /**
-     * Get the current number of patterns in the trie.
+     * Get the current number of patterns in the Trie.
      *
-     * @return the size of the trie
+     * @return the size of the Trie
      */
     public int getSize() {
         return size;
     }
 
     /**
-     * Get the root of the trie.
+     * Get the root of the Trie.
      *
-     * @return the root of the trie
+     * @return the root of the Trie
      */
     public Node getRoot() { return root; }
 
     /**
-     * Remove a single pattern from the trie.
+     * Recursive function for removing a single pattern from the Trie.
      *
-     * @param curr the current Node in the trie
+     * @param curr the current Node in the Trie
      * @param path the pattern to be removed
      * @return Node to be set as child
      */
@@ -89,12 +84,12 @@ public class Trie {
     }
 
     /**
-     * Recursive helper function for removing impossible guesses.
+     * Recursive function for removing impossible guesses.
      *
-     * @param curr the current Node in the trie
+     * @param curr  the current Node in the Trie
      * @param black the number of black response pegs
      * @param white the number of white response pegs
-     * @param code current pattern traversal of the trie
+     * @param code  current pattern traversal of the Trie
      * @param guess the last guess made
      * @return Node to be set as child
      */
@@ -124,7 +119,7 @@ public class Trie {
      *
      * @param origBlack the number of black response pegs
      * @param origWhite the number of white response pegs
-     * @param origCode possible color pattern
+     * @param origCode  possible color pattern
      * @param origGuess the last guess made
      * @return whether or not the pattern is possible
      */
@@ -164,6 +159,16 @@ public class Trie {
         return false;
     }
 
+    /**
+     * Choose the next guess by which will eliminate the most possibilities.
+     *
+     * @param curr      the current Node in the Trie
+     * @param S         Trie representing all possible patterns
+     * @param path      current pattern traversal of the Trie
+     * @param guess     the guess that will be selected next
+     * @param bestScore the most possible eliminated patterns
+     * @return the most possible eliminated patterns
+     */
     public int minimax(Node curr, Trie S, int[] path, int[] guess, int bestScore) {
         // determine if pattern is possible or not
         if (curr.getDepth() == length - 1) {
@@ -195,6 +200,16 @@ public class Trie {
         return bestScore;
     }
 
+    /**
+     * Calculate how many possibilities can be eliminated from a specific guess and response.
+     *
+     * @param curr  the current Node in the Trie
+     * @param black the number of black response pegs
+     * @param white the number of white response pegs
+     * @param code  current pattern traversal of the Trie
+     * @param guess the potential guess being examined
+     * @return the number of possibilities eliminated
+     */
     public int numElim(Node curr, int black, int white, int[] code, int[] guess) {
         // determine if pattern is possible or not
         if (curr.getDepth() == length - 1) {
@@ -212,6 +227,12 @@ public class Trie {
         return count;
     }
 
+    /**
+     * Set the final guess when the answer is certain.
+     *
+     * @param curr  the current Node in the Trie
+     * @param guess the guess that will be selected next
+     */
     public void setLast(Node curr, int[] guess) {
         // determine if pattern is possible or not
         if (curr.getDepth() == length - 1) return;
@@ -225,9 +246,9 @@ public class Trie {
     }
 
     /**
-     * Converts the contents of the trie to readable format.
+     * Converts the contents of the Trie to readable format.
      *
-     * @return String representation of all paths of the trie
+     * @return String representation of all paths of the Trie
      */
     @Override
     public String toString() {
@@ -237,11 +258,11 @@ public class Trie {
     }
 
     /**
-     * Recursive helper function for converting trie to readable format.
+     * Recursive helper function for converting Trie to readable format.
      *
-     * @param curr the current Node in the trie
+     * @param curr the current Node in the Trie
      * @param str readable format of current traversal
-     * @return String representation of all paths of the trie
+     * @return String representation of all paths of the Trie
      */
     public String toStringHelper(Node curr, String str) {
         // end of path

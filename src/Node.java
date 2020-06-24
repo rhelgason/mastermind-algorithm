@@ -1,9 +1,8 @@
-import java.lang.reflect.Array;
 import java.util.List;
 import java.util.ArrayList;
 
 /**
- * Class representing a node representing a color for the game.
+ * Class representing a color placement for the game.
  */
 public class Node {
     private int color;
@@ -11,9 +10,9 @@ public class Node {
     private List<Node> children;
 
     /**
-     * Constructor for the node.
+     * Constructor for the Node
      *
-     * @param color the color for the node
+     * @param color the color for the Node
      */
     public Node(int color, int depth) {
         this.color = color;
@@ -26,7 +25,7 @@ public class Node {
     }
 
     /**
-     * Sets the children to null if the list is empty.
+     * Determines if all children are defunct.
      */
     public Node checkChildren() {
         for (Node child : children) {
