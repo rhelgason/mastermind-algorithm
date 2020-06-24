@@ -9,13 +9,15 @@ import java.util.LinkedList;
 public class Trie {
     private Node root;
     private int size;
-    private static final int length = 4;
-    private static final int numColors = 6;
+    int length;
+    int numColors;
 
     /**
      * Default constructor for Trie class.
      */
-    public Trie() {
+    public Trie(int length, int numColors) {
+        this.length = length;
+        this.numColors = numColors;
         root = new Node(-1, -1);
         size = (int) Math.pow(numColors, length);
         initHelper(root,0);
@@ -52,31 +54,54 @@ public class Trie {
     }
 
     /**
-     * Remove any guesses from the trie that are not possible.
+     * Get the root of the trie.
      *
-     * @param white the number of white response pegs
-     * @param black the number of black response pegs
-     * @param guess the last guess made
+     * @return the root of the trie
      */
-    public void removeGuesses(int white, int black, int[] guess) {
-        int[] empty = new int[length];
-        removeGuessesHelper(root, white, black, empty, guess);
+    public Node getRoot() { return root; }
+
+    /**
+     * Remove a single pattern from the trie.
+     *
+     * @param curr the current Node in the trie
+     * @param path the pattern to be removed
+     * @return Node to be set as child
+     */
+    public Node removePath(Node curr, int[] path) {
+        // determine if pattern is possible or not
+        if (curr.getDepth() == length - 1) {
+            size--;
+            return null;
+        }
+
+        // check all child paths
+        int i = -1;
+        for (Node child : curr.getChildren()) {
+            i++;
+            if (child == null) continue;
+            if (child.getColor() == path[child.getDepth()]) {
+                curr.setChild(i, removePath(child, path));
+                if (curr.getDepth() < length - 2) curr.setChild(i, child.checkChildren());
+            }
+        }
+
+        return curr;
     }
 
     /**
      * Recursive helper function for removing impossible guesses.
      *
      * @param curr the current Node in the trie
-     * @param white the number of white response pegs
      * @param black the number of black response pegs
+     * @param white the number of white response pegs
      * @param code current pattern traversal of the trie
      * @param guess the last guess made
-     * @return
+     * @return Node to be set as child
      */
-    public Node removeGuessesHelper(Node curr, int white, int black, int[] code, int[] guess) {
+    public Node removeGuesses(Node curr, int black, int white, int[] code, int[] guess) {
         // determine if pattern is possible or not
         if (curr.getDepth() == length - 1) {
-            if (valid(white, black, code, guess)) return curr;
+            if (valid(black, white, code, guess)) return curr;
             size--;
             return null;
         }
@@ -87,7 +112,7 @@ public class Trie {
             i++;
             if (child == null) continue;
             code[child.getDepth()] = child.getColor();
-            curr.setChild(i, removeGuessesHelper(child, white, black, code, guess));
+            curr.setChild(i, removeGuesses(child, black, white, code, guess));
             if (curr.getDepth() < length - 2) curr.setChild(i, child.checkChildren());
         }
 
@@ -97,13 +122,13 @@ public class Trie {
     /**
      * Determines if a pattern is possible given the response pegs.
      *
-     * @param origWhite the number of white response pegs
      * @param origBlack the number of black response pegs
+     * @param origWhite the number of white response pegs
      * @param origCode possible color pattern
      * @param origGuess the last guess made
      * @return whether or not the pattern is possible
      */
-    public boolean valid(int origWhite, int origBlack, int[] origCode, int[] origGuess) {
+    public boolean valid(int origBlack, int origWhite, int[] origCode, int[] origGuess) {
         // make copies of patterns
         int[] code = new int[length];
         for (int i = 0; i < length; i++) code[i] = origCode[i];
@@ -137,6 +162,66 @@ public class Trie {
         // determine validity of code
         if (white == origWhite && black == origBlack) return true;
         return false;
+    }
+
+    public int minimax(Node curr, Trie S, int[] path, int[] guess, int bestScore) {
+        // determine if pattern is possible or not
+        if (curr.getDepth() == length - 1) {
+            int score = Integer.MAX_VALUE;
+            for (int i = 0; i < length; i++) {
+                for (int j = length - i; j >= 0; j--) {
+                    // determine how many would be eliminated
+                    int elim = S.numElim(S.getRoot(), i, j, new int[length], path);
+                    if (elim < score) score = elim;
+                }
+            }
+
+            // replace best score if possible
+            if (score > bestScore) {
+                bestScore = score;
+                for (int i = 0; i < path.length; i++) {
+                    guess[i] = path[i];
+                }
+            }
+            return bestScore;
+        }
+
+        // check all child paths
+        for (Node child : curr.getChildren()) {
+            if (child == null) continue;
+            path[child.getDepth()] = child.getColor();
+            bestScore = minimax(child, S, path, guess, bestScore);
+        }
+        return bestScore;
+    }
+
+    public int numElim(Node curr, int black, int white, int[] code, int[] guess) {
+        // determine if pattern is possible or not
+        if (curr.getDepth() == length - 1) {
+            if (valid(white, black, code, guess)) return 0;
+            return 1;
+        }
+
+        // check all child paths
+        int count = 0;
+        for (Node child : curr.getChildren()) {
+            if (child == null) continue;
+            code[child.getDepth()] = child.getColor();
+            count += numElim(child, black, white, code, guess);
+        }
+        return count;
+    }
+
+    public void setLast(Node curr, int[] guess) {
+        // determine if pattern is possible or not
+        if (curr.getDepth() == length - 1) return;
+
+        // check all child paths
+        for (Node child : curr.getChildren()) {
+            if (child == null) continue;
+            guess[child.getDepth()] = child.getColor();
+            setLast(child, guess);
+        }
     }
 
     /**

@@ -6,17 +6,21 @@ import java.util.Scanner;
 public class Mastermind_Algorithm {
     public static void main(String[] args) {
         //initialize variables
-        Trie S = new Trie();
+        int length = 4;
+        int numColor = 6;
+        Trie S = new Trie(length, numColor);
+        Trie unused = new Trie(length, numColor);
         int[] guess = {0, 0, 1, 1};
         int white = 0;
         int black = 0;
-        boolean cont = true;
         int numGuess = 0;
+        boolean won = false;
 
         // continue guessing until the game is completed
-        while (cont) {
+        while (!won) {
             // guess and get response
-            System.out.println("Guess " + ++numGuess + ":" + toColor(guess));
+            unused.removePath(unused.getRoot(), guess);
+            System.out.println("\nGuess " + ++numGuess + ":" + toColor(guess));
             do {
                 black = getPegs("black");
                 white = getPegs("white");
@@ -25,16 +29,22 @@ public class Mastermind_Algorithm {
 
             // check for win
             if (black == 4) {
-                cont = false;
+                won = true;
                 continue;
             }
 
-            // remove impossible combinations
-            S.removeGuesses(white, black, guess);
-            cont = false;
+            // select next guess
+            S.removeGuesses(S.getRoot(), black, white, new int[length], guess);
+            if (S.getSize() == 0) {
+                break;
+            } else if (S.getSize() == 1) {
+                S.setLast(S.getRoot(), guess);
+            } else {
+                unused.minimax(unused.getRoot(), S, new int[length], guess, -1);
+            }
         }
 
-        // game has been won
+        // game has finished
     }
 
     /**
