@@ -1,8 +1,11 @@
-default: src/Mastermind_Algorithm.java src/Trie.java src/Node.java
-	javac src/Mastermind_Algorithm.java src/Trie.java src/Node.java
+default: src/MastermindPlay.java src/MastermindAuto.java src/Trie.java src/Node.java
+	javac src/MastermindPlay.java src/MastermindAuto.java src/Trie.java src/Node.java
 
-run: src/Mastermind_Algorithm.class src/Trie.class src/Node.class
-	java src.Mastermind_Algorithm
+play: src/MastermindPlay.class src/Trie.class src/Node.class
+	java src.MastermindPlay
+
+auto: src/MastermindAuto.class src/Trie.class src/Node.class
+	java src.MastermindAuto
 
 clean:
 	rm -rf src/*.class

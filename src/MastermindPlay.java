@@ -2,9 +2,9 @@ package src;
 import java.util.Scanner;
 
 /**
- * Entry point for program.
+ * Entry point for program when playing against the computer.
  */
-public class Mastermind_Algorithm {
+public class MastermindPlay {
     public static void main(String[] args) {
         //initialize variables
         int length = 4;
@@ -21,6 +21,7 @@ public class Mastermind_Algorithm {
         System.out.println("\nWelcome to Mastermind. Create a permutation of " + length + " colors for the computer to guess.");
         System.out.println("You may choose between the following colors: red, blue, green, yellow, white, and black.");
         while (!won) {
+            // get user input
             unused.removePath(unused.getRoot(), guess);
             System.out.println("\nGuess " + ++numGuess + ":" + toColor(guess));
             do {
