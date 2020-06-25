@@ -57,6 +57,22 @@ public class Trie {
      */
     public Node getRoot() { return root; }
 
+    public void getFirst(Node curr, int[] path) {
+        // determine if pattern is possible or not
+        if (curr.getDepth() == length - 1) {
+            size--;
+            return;
+        }
+
+        // check all child paths
+        for (Node child : curr.getChildren()) {
+            if (child == null) continue;
+            path[child.getDepth()] = child.getColor();
+            getFirst(child, path);
+            break;
+        }
+    }
+
     /**
      * Recursive function for removing a single pattern from the Trie.
      *

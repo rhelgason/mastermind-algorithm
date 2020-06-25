@@ -3,31 +3,18 @@ import java.util.Scanner;
 import java.util.Random;
 
 /**
- * Entry point for program when running games automatically.
+ * Entry point for program when running all possible game iterations.
  */
-public class MastermindAuto {
+public class MastermindAll {
     public static void main(String[] args) {
         //initialize variables
         int length = 4;
         int numColor = 6;
-        Random rand = new Random();
-
-        // get game count input
-        Scanner scan = new Scanner(System.in);
-        boolean invalid = true;
-        String input = "";
-        System.out.println();
-        do {
-            System.out.print("Enter the number of games that should be ran: ");
-            input = scan.nextLine();
-            if (!input.matches("-*\\d+")) System.out.println("\nError. Please enter a valid integer.");
-            else if (Integer.parseInt(input) <= 0) System.out.println("\nError. Input must be greater than 0.");
-            else invalid = false;
-        } while (invalid);
-        System.out.println();
-        int numGame = Integer.parseInt(input);
+        Trie all = new Trie(length, numColor);
+        int numGame = (int) Math.pow(numColor, length);
         int game = 0;
         int totalGuess = 0;
+        System.out.println();
 
         while (game < numGame) {
             // initialize game variables
@@ -36,7 +23,8 @@ public class MastermindAuto {
             Trie unused = new Trie(length, numColor);
             int[] guess = {0, 0, 1, 1};
             int[] code = new int[length];
-            for (int i = 0; i < length; i++) code[i] = rand.nextInt(numColor);
+            all.getFirst(all.getRoot(), code);
+            all.removePath(all.getRoot(), code);
             int white = 0;
             int black = 0;
             int numGuess = 0;
@@ -77,7 +65,7 @@ public class MastermindAuto {
 
         // print stats
         double average = ((double) totalGuess) / numGame;
-        System.out.println("\nThe computer played all " + numGame + (numGame == 1 ? " game " : " games ") +
+        System.out.println("\nThe computer played " + numGame + (numGame == 1 ? " game " : " games ") +
                 "with an average of " + average + (average == 1.0 ? " guess " : " guesses ") + "per game.");
     }
 
