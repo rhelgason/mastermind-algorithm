@@ -21,7 +21,6 @@ public class Mastermind_Algorithm {
         System.out.println("\nWelcome to Mastermind. Create a permutation of " + length + " colors for the computer to guess.");
         System.out.println("You may choose between the following colors: red, blue, green, yellow, white, and black.");
         while (!won) {
-            // guess and get response
             unused.removePath(unused.getRoot(), guess);
             System.out.println("\nGuess " + ++numGuess + ":" + toColor(guess));
             do {
@@ -40,8 +39,6 @@ public class Mastermind_Algorithm {
             S.removeGuesses(S.getRoot(), black, white, new int[length], guess);
             if (S.getSize() == 0) {
                 break;
-            } else if (S.getSize() == 1) {
-                S.setLast(S.getRoot(), guess);
             } else {
                 unused.minimax(unused.getRoot(), S, new int[length], guess, -1);
             }

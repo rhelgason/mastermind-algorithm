@@ -186,9 +186,7 @@ public class Trie {
             // replace best score if possible
             if (score > bestScore) {
                 bestScore = score;
-                for (int i = 0; i < path.length; i++) {
-                    guess[i] = path[i];
-                }
+                for (int i = 0; i < path.length; i++) guess[i] = path[i];
             }
             return bestScore;
         }
@@ -215,7 +213,7 @@ public class Trie {
     public int numElim(Node curr, int black, int white, int[] code, int[] guess) {
         // determine if pattern is possible or not
         if (curr.getDepth() == length - 1) {
-            if (valid(white, black, code, guess)) return 0;
+            if (valid(black, white, code, guess)) return 0;
             return 1;
         }
 
@@ -227,24 +225,6 @@ public class Trie {
             count += numElim(child, black, white, code, guess);
         }
         return count;
-    }
-
-    /**
-     * Set the final guess when the answer is certain.
-     *
-     * @param curr  the current Node in the Trie
-     * @param guess the guess that will be selected next
-     */
-    public void setLast(Node curr, int[] guess) {
-        // determine if pattern is possible or not
-        if (curr.getDepth() == length - 1) return;
-
-        // check all child paths
-        for (Node child : curr.getChildren()) {
-            if (child == null) continue;
-            guess[child.getDepth()] = child.getColor();
-            setLast(child, guess);
-        }
     }
 
     /**
