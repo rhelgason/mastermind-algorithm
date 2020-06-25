@@ -17,6 +17,8 @@ public class Mastermind_Algorithm {
         boolean won = false;
 
         // continue guessing until the game is completed
+        System.out.println("\nWelcome to Mastermind. Create a permutation of " + length + " colors for the computer to guess.");
+        System.out.println("You may choose between the following colors: red, blue, green, yellow, white, and black.");
         while (!won) {
             // guess and get response
             unused.removePath(unused.getRoot(), guess);
