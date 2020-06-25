@@ -1,3 +1,5 @@
+package src;
+
 /**
  * Class representing a Trie data structure.
  */
