@@ -32,4 +32,4 @@ From the set of guesses with the minimum (max) score, select one as the next gue
 ## Usage
 A Makefile has been included in the top directory. To use the Makefile, the make utility must be available. To compile all of the files, run the `make` command in a terminal. This will create .class files for use by the Java Runtime Environment. The program can then be ran using the `make run` command. To remove all of the .class files created during compilation, run the `make clean` command.
 
-If the make utility is not available, the program can still be ran using usual Java commands. Compile all of the files with `javac src/Mastermind_Algorithm.java src/Trie.java src/Node.java` and run the program with `java src.Mastermind_Algorithm`. All .class files can be cleaned using `rm -rf src/*.class`.
+If the make utility is not available, the program can still be ran using Java commands. Compile all of the files with `javac src/Mastermind_Algorithm.java src/Trie.java src/Node.java` and run the program with `java src.Mastermind_Algorithm`. All .class files can be cleaned using `rm -rf src/*.class`.
