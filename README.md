@@ -1,5 +1,5 @@
 # Mastermind Algorithm
-An implementation of Donald Knuth's algorithm to always win the Mastermind game in five moves or fewer.
+An implementation of Donald Knuth's Mastermind algorithm to always win in five moves or fewer.
 
 ## How to Play
 Mastermind is generally played with two players, the codemaker and the codebreaker. In this case, the computer will act as the codebreaker. The codemaker creates a pattern of length 4, consisting of six different colors. The codebreaker then attempts to guess the secret pattern in as few guesses as possible.
