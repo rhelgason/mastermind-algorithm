@@ -1,4 +1,4 @@
-# Mastermind Algorithm
+# mastermind-algorithm
 An implementation of Donald Knuth's Mastermind algorithm to always win in five moves or fewer.
 
 ## How to Play
