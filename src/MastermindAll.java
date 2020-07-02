@@ -1,6 +1,4 @@
 package src;
-import java.util.Scanner;
-import java.util.Random;
 
 /**
  * Entry point for program when running all possible game iterations.

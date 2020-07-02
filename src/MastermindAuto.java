@@ -20,10 +20,20 @@ public class MastermindAuto {
         do {
             System.out.print("Enter the number of games that should be ran: ");
             input = scan.nextLine();
-            if (!input.matches("-*\\d+")) System.out.println("\nError. Please enter a valid integer.");
-            else if (Integer.parseInt(input) <= 0) System.out.println("\nError. Input must be greater than 0.");
+            if (!input.matches("-*\\d+")) {
+                System.out.println("\nError. Please enter a valid integer.");
+                continue;
+            }
+            try {
+                Integer.parseInt(input);
+            } catch(NumberFormatException e) {
+                System.out.println("\nError. The integer is out of bounds.");
+                continue;
+            }
+            if (Integer.parseInt(input) <= 0) System.out.println("\nError. Input must be greater than 0.");
             else invalid = false;
         } while (invalid);
+        scan.close();
         System.out.println();
         int numGame = Integer.parseInt(input);
         int game = 0;
