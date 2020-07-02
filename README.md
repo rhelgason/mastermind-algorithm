@@ -30,7 +30,7 @@ From the set of guesses with the minimum (max) score, select one as the next gue
     Knuth follows the convention of choosing the guess with the least numeric value e.g. 2345 is lower than 3456. Knuth also gives an example showing that in some cases no member of S will be among the highest scoring guesses and thus the guess cannot win on the next turn, yet will be necessary to assure a win in five.
 
 ## Usage
-A Makefile has been included in the top directory. To use the Makefile, the make utility must be available. To compile all of the files, run the `make` command in a terminal. This will create .class files for use by the Java Runtime Environment. The program can then be ran using the any of the commands detailed below under "Entry Points". To remove all of the .class files created during compilation, run the `make clean` command.
+A Makefile has been included in the top directory. To use the Makefile, the make utility must be available. To compile all of the files, run the `make` command in a terminal. This will create .class files for use by the Java Runtime Environment. The program can then be ran using any of the commands detailed below under "Entry Points". To remove all of the .class files created during compilation, run the `make clean` command.
 
 If the make utility is not available, the program can still be ran using Java commands. Compile all of the files with `javac src/MastermindPlay.java src/MastermindAuto.java src/Trie.java src/Node.java` and run the program with `java src.<class file name>`. All .class files can be cleaned using `rm -rf src/*.class`.
 
