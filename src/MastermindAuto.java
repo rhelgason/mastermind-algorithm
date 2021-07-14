@@ -87,7 +87,7 @@ public class MastermindAuto {
 
         // print stats
         double average = ((double) totalGuess) / numGame;
-        System.out.println("\nThe computer played all " + numGame + (numGame == 1 ? " game " : " games ") +
+        System.out.println("\nThe computer played " + numGame + (numGame == 1 ? " game " : " games ") +
                 "with an average of " + average + (average == 1.0 ? " guess " : " guesses ") + "per game.");
     }
 
